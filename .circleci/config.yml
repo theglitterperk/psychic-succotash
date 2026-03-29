@@ -1,16 +1,32 @@
 version: 2.1
 
-orbs:
-  node: circleci/node@4.7.0
-
 jobs:
-  build:
-    executor:
-      name: node/default
-      tag: "10.4"
+  one:
+    docker:
+      - image: cimg/ruby:2.6.8
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-      - run: npm run test
+      - run:
+          name: First Hello World
+          command: echo "im working on continuous integration.."
+      - run:
+          name: Sleep
+          command: sleep 25
+
+  two:
+    docker:
+      - image: cimg/ruby:3.0.2
+    steps:
+      - checkout
+      - run:
+          name: Second Hello World
+          command: echo "im working on continuous integration but this is part two.."
+      - run:
+          name: Sleep
+          command: sleep 15
+
+workflows:
+  one_and_two:
+    jobs:
+      - one
+      - two
